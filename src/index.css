@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #262B31 #0D1013;
+}
+
+body {
+  @apply bg-page text-textPrimary font-sans antialiased;
+  background: #0D1013;
+}
+
+/* Mono for numbers */
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Custom scrollbar webkit */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0D1013;
+}
+::-webkit-scrollbar-thumb {
+  background: #262B31;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2ED9A0;
+}
