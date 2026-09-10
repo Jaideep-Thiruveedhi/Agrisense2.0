@@ -1,0 +1,290 @@
+openapi: 3.1.0
+info:
+  title: AgriSense API
+  version: 1.0.0
+  description: AgriSense biological-application timing — farmer + agronomist surfaces. All IDs are opaque strings, timestamps UTC ISO-8601, timezone Asia/Kolkata separate.
+servers:
+  - url: http://localhost:8000/api/v1
+    description: local dev
+paths:
+  /health/live:
+    get:
+      summary: Liveness probe
+      responses:
+        200: { description: ok }
+  /health/ready:
+    get:
+      summary: Readiness checks local deps without billing
+      responses:
+        200: { description: ready }
+  /me:
+    get:
+      summary: Get own profile
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+    patch:
+      summary: Patch own profile
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /me/export:
+    post:
+      summary: Export own data
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /fields:
+    get:
+      security: [{ bearerAuth: [] }]
+      summary: List fields
+      responses: { 200: { description: ok } }
+    post:
+      security: [{ bearerAuth: [] }]
+      summary: Create field
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string }
+      responses: { 201: { description: created } }
+  /fields/{id}:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+    patch:
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: expected_version, in: query, required: true, schema: { type: integer } }
+      responses: { 200: { description: ok } }
+  /fields/{id}/archive:
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /fields/{id}/seasons:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /seasons/{id}:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+    patch:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /seasons/{id}/close:
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /seasons/{id}/summary:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /planning/compare:
+    post:
+      security: [{ bearerAuth: [] }]
+      summary: Compare eligible crops
+      responses: { 200: { description: ok } }
+  /seasons/{id}/evaluate:
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        200: { description: evaluated }
+        202: { description: accepted with job }
+  /seasons/{id}/recommendations/latest:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /recommendations/{id}:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /seasons/{id}/forecast:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /seasons/{id}/water:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /seasons/{id}/economics:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /seasons/{id}/journal:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /journal/{id}:
+    patch:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /media/uploads:
+    post:
+      security: [{ bearerAuth: [] }]
+      responses: { 201: { description: created } }
+  /media/{id}/complete:
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /media/{id}/access:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /soil/extractions:
+    post:
+      security: [{ bearerAuth: [] }]
+      responses: { 201: { description: created } }
+  /soil/extractions/{id}/confirm:
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /tasks:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /tasks/{id}:
+    patch:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /notifications:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /notifications/{id}:
+    patch:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /reminders:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+    post:
+      security: [{ bearerAuth: [] }]
+      responses: { 201: { description: created } }
+  /reminders/{id}:
+    patch:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+    delete:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /conversations:
+    post:
+      security: [{ bearerAuth: [] }]
+      responses: { 201: { description: created } }
+  /conversations/{id}/messages:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /proposals/{id}/confirm:
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /proposals/{id}/cancel:
+    post:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /channels/whatsapp/link:
+    post:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+    delete:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /channels/push:
+    post:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+    delete:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /catalog/crops:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /catalog/products:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /catalog/locations:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /jobs/{id}:
+    get:
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { 200: { description: ok } }
+  /agronomist/summary:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /agronomist/fields:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /agronomist/stress-map:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /agronomist/evidence:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /agronomist/backtests:
+    post:
+      security: [{ bearerAuth: [] }]
+      responses: { 202: { description: accepted } }
+  /agronomist/models:
+    get:
+      security: [{ bearerAuth: [] }]
+      responses: { 200: { description: ok } }
+  /webhook:
+    get:
+      summary: Meta verify hub.challenge
+      responses: { 200: { description: verified } }
+    post:
+      summary: Meta inbound
+      responses: { 200: { description: accepted } }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

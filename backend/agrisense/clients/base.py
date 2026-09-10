@@ -1,0 +1,6 @@
+from __future__ import annotations
+from typing import Protocol, Any
+
+class WeatherProvider(Protocol):
+    async def fetch_forecast(self, lat: float, lon: float, start: str, end: str) -> dict[str,Any]: ...
+    async def fetch_history(self, lat: float, lon: float, start: str, end: str) -> dict[str,Any]: ...
